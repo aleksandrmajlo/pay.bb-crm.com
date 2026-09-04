@@ -1,0 +1,65 @@
+{
+    "menu": [
+        {
+            "url": "/",
+            "name": "Дашборд",
+            "icon": "menu-icon tf-icons ti ti-smart-home",
+            "slug": "pages-home"
+        },
+        {
+            "url": "/billiards",
+            "name": "Більярдні",
+            "icon": "menu-icon tf-icons ti ti-sport-billard",
+            "slug": "billiards"
+        },
+        {
+            "url": "/users",
+            "name": "Користувачі",
+            "icon": "menu-icon tf-icons ti ti-user-circle",
+            "slug": "pages-home"
+        },
+        {
+            "url": "/rates",
+            "name": "Тарифи",
+            "icon": "menu-icon tf-icons ti ti-zoom-money",
+            "slug": "pages-home"
+        },
+        {
+            "url": "/orders",
+            "name": "Оплати",
+            "icon": "menu-icon tf-icons ti ti-businessplan",
+            "slug": "pages-home"
+        },
+        {
+            "name": "Faqs",
+            "icon": "menu-icon tf-icons ti ti-git-branch",
+            "slug": "pages-faqs",
+            "submenu": [
+                {
+                    "url": "/faqs",
+                    "icon": "menu-icon tf-icons ti ti-git-branch",
+                    "name": "Faqs",
+                    "slug": "pages-faqs"
+                },
+                {
+                    "url": "/tags",
+                    "icon": "menu-icon tf-icons ti ti-tag",
+                    "name": "Tags",
+                    "slug": "tags"
+                } ,
+                {
+                    "url": "/mail-messages",
+                    "icon": "menu-icon tf-icons ti ti-mail",
+                    "name": "Letters",
+                    "slug": "letters"
+                }
+            ]
+        },
+        {
+            "url": "/langs",
+            "name": "Мови",
+            "icon": "menu-icon tf-icons ti ti-language",
+            "slug": "pages-home"
+        }
+    ]
+}
