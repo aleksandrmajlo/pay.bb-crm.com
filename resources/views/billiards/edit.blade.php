@@ -11,6 +11,15 @@
             {{ session('success') }}
         </div>
     @endif
+    @if($errors->any())
+        <div class="alert alert-danger mt-3" role="alert">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-6">
             <form method="post" action="{{ route('billiards.update', $billiard->id) }}">
@@ -45,6 +54,47 @@
                         <option value="USD" @if($billiard->valuta=="USD") selected @endif >USD</option>
                         <option value="EUR" @if($billiard->valuta=="EUR") selected @endif >EUR</option>
                     </select>
+                </div>
+
+                <h4 class="mt-4">TurboSMS</h4>
+                <div class="mb-3">
+                    <label for="turbosms_login" class="form-label">Логін TurboSMS</label>
+                    <input type="text" class="form-control" id="turbosms_login" name="turbosms_login"
+                           value="{{ old('turbosms_login', $smsSettings->turbosms_login) }}" autocomplete="off"/>
+                </div>
+                <div class="mb-3">
+                    <label for="turbosms_password" class="form-label">Пароль TurboSMS</label>
+                    <input type="password" class="form-control" id="turbosms_password" name="turbosms_password" autocomplete="new-password"/>
+                    @if($smsSettings->getRawOriginal('turbosms_password'))
+                        <div class="form-text">Пароль збережено. Залиште поле порожнім, щоб не змінювати його.</div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="clear_turbosms_password" id="clear_turbosms_password" value="1"/>
+                            <label class="form-check-label" for="clear_turbosms_password">Видалити збережений пароль</label>
+                        </div>
+                    @endif
+                </div>
+
+                <h4 class="mt-4">Twilio</h4>
+                <div class="mb-3">
+                    <label for="twillo_sid" class="form-label">Account SID</label>
+                    <input type="text" class="form-control" id="twillo_sid" name="twillo_sid"
+                           value="{{ old('twillo_sid', $smsSettings->twillo_sid) }}" autocomplete="off"/>
+                </div>
+                <div class="mb-3">
+                    <label for="twillo_token" class="form-label">Auth Token</label>
+                    <input type="password" class="form-control" id="twillo_token" name="twillo_token" autocomplete="new-password"/>
+                    @if($smsSettings->getRawOriginal('twillo_token'))
+                        <div class="form-text">Токен збережено. Залиште поле порожнім, щоб не змінювати його.</div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="clear_twillo_token" id="clear_twillo_token" value="1"/>
+                            <label class="form-check-label" for="clear_twillo_token">Видалити збережений токен</label>
+                        </div>
+                    @endif
+                </div>
+                <div class="mb-3">
+                    <label for="twillo_from" class="form-label">Номер відправника</label>
+                    <input type="text" class="form-control" id="twillo_from" name="twillo_from"
+                           value="{{ old('twillo_from', $smsSettings->twillo_from) }}" placeholder="+18337591488"/>
                 </div>
 
                 <div class="mb-3">

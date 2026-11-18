@@ -21,4 +21,9 @@ class Billiard extends Model
     {
         return $this->hasOne(Rate::class);
     }
+
+    public function smsSettings()
+    {
+        return $this->hasOne(BilliardSmsSetting::class)->withDefault();
+    }
 }

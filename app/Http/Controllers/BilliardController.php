@@ -51,12 +51,14 @@ class BilliardController extends Controller
     public function edit(string $id)
     {
         $billiard = Billiard::findOrFail($id);
+        $smsSettings = $billiard->smsSettings;
         $rates=Rate::where('billiard_id',$id)->get();
         $rate_not_bar=Rate::where('billiard_id',$id)->where('isBar',0)->first();
         $rate_with_bar=Rate::where('billiard_id',$id)->where('isBar',1)->first();
         $valuta = config('valuta');
         return view('billiards.edit', [
             'billiard' => $billiard,
+            'smsSettings' => $smsSettings,
             'rates' =>$rates,
             'valuta' => $valuta,
             'rate_not_bar'=>$rate_not_bar,
@@ -69,15 +71,41 @@ class BilliardController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
-
         $billiard = Billiard::findOrFail($id);
+        $smsSettings = $billiard->smsSettings;
+
+        $request->validate([
+            'turbosms_login' => ['nullable', 'string', 'max:255'],
+            'turbosms_password' => ['nullable', 'string', 'max:255'],
+            'twillo_sid' => ['nullable', 'string', 'max:255'],
+            'twillo_token' => ['nullable', 'string', 'max:255'],
+            'twillo_from' => ['nullable', 'string', 'max:255'],
+            'clear_turbosms_password' => ['nullable', 'boolean'],
+            'clear_twillo_token' => ['nullable', 'boolean'],
+        ]);
 
         $billiard->name = $request->name;
         $billiard->date_end = $request->date_end;
         $billiard->valuta = $request->valuta;
         $billiard->comment = $request->comment;
+
+        foreach (['turbosms_login', 'twillo_sid', 'twillo_from'] as $field) {
+            if ($request->exists($field)) {
+                $smsSettings->{$field} = $request->input($field);
+            }
+        }
+
+        foreach (['turbosms_password', 'twillo_token'] as $field) {
+            if ($request->boolean('clear_'.$field)) {
+                $smsSettings->{$field} = null;
+            } elseif ($request->filled($field)) {
+                $smsSettings->{$field} = $request->input($field);
+            }
+        }
         $billiard->save();
+        if ($smsSettings->isDirty(['turbosms_login', 'turbosms_password', 'twillo_sid', 'twillo_token', 'twillo_from'])) {
+            $billiard->smsSettings()->save($smsSettings);
+        }
 
         if(!$request->has('billiard_rate')){
             Rate::where('billiard_id',$billiard->id)->delete();
